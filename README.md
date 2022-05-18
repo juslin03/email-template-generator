@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# INTERPRETEUR DE MODELE D'EMAIL A PARTIR DE CODE SOURCE
 Bonjour,
 Merci de recevoir ci-contre, le sujet de ton stage.
 Il s'agit, pour toi, de créer un système d'interprétation de modèle d’emails à partir de code source (le cas du HTML).
