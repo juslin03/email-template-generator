@@ -13,10 +13,12 @@ class App extends React.Component {
       sourcehtml: '',
       remarques: '',
       donnees_de_retour: null,
-      openModal:false
-
+      openModal:false,
+      contentlogo:'https://dipafrica.com/',
+      contenturl:'https://dipafrica.com/'
     }
   }
+  
 
 
 
@@ -68,6 +70,9 @@ class App extends React.Component {
 
     //traitement de la source html
     const isContentInSource = sourcehtml.includes('${content.');
+    if (sourcehtml.includes('${content.cid.logo')){
+      content.cid.logo=this.contentlogo
+    }
     const defaultUrl = 'http://google.ci';
     console.log(isContentInSource);
     return (
