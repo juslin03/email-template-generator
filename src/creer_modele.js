@@ -1,12 +1,6 @@
 import React from 'react';
-import './App.css';
-import {BrowserRouter,Routes,Route, Link} from "react-router-dom";
-import NewModelComp from './creer_modele';
-import ModelsList from './ModelsList';
-import Navbar from './Navbar';
-
-class App extends React.Component {
-
+import Modal from 'react-modal';
+class models extends React.Component{
   constructor(props) {
     super(props); // this is required
     this.state = {
@@ -21,11 +15,6 @@ class App extends React.Component {
       modeles:[]
     }
   }
-
-componentDidMount() {
-  this.getAllEmail()
-}
-
 
   handleInputChange = (event) => {
     const target = event.target;
@@ -64,25 +53,6 @@ componentDidMount() {
     });
 
   }
-
-  getAllEmail= async () =>{
-    await fetch('http://192.168.1.19:8000/models')
-    .then(res => res.json())
-    .then(({data}) => {
-    this.setState({
-      modeles: data
-    })
-  });
-  }
-
-  SupprEmail= async(id)=>{
-    await fetch('http://192.168.1.19:8000/models/'+id, { method: 'DELETE' })
-    .then(res=>res.json())
-    
-    .then(({suppr}) => {
-      console.log({suppr});
-    })
-    .then(window.location.reload())}
 
   emailModel (content = {}) {
     const {sourcehtml,contentlogo,contenturl,contentnotice} = this.state;
@@ -147,36 +117,45 @@ componentDidMount() {
   }
 
   
-  render() {
-    // const {nom,description,sourcehtml,remarques } = this.state;
+  render(){
 
-    const {nom,description,sourcehtml,remarques} = this.state;
-    const regex = /\$\{([^}]+)\}/g;
-    const variables = sourcehtml.match(regex);
-    // const logoVariable = variables.filter(variable => variable.includes('logo'));
-    // const urlVariable = variables.filter(variable => variable.includes('url'));
-    // const logo = logoVariable.map(variable => variable.replace(/[{}]/g, `${this.state.contentlogo}`));
-    // const url = urlVariable.map(variable => variable.replace(/[{}]/g, `${this.state.contenturl}`));
+    return(
+    <div>
+        <form onSubmit={this.handleSubmit} className="GIS">
+          <span htmlFor='Adresse' className='model'> nom du modele</span>
+          <textarea type='text' name="nom" className='boit1' value={this.state.nom} onChange={this.handleInputChange} required/>
 
-    // generate random values for the variables
-    const values = variables !=null && variables.map(() => Math.random().toString(36).substring(7));
+          <span htmlFor='Description' className='Descr'> <br></br><br></br><br></br>Description</span>
+          <textarea placeholder='' className='boit2' name="description" value={this.state.description} onChange={this.handleInputChange}  required/>
+
+          <span htmlFor='html' className='html'> <br></br><br></br> Source html <br></br>du<br></br> modèle</span>
+          <textarea placeholder='' className='boit3' name="sourcehtml" value={this.state.sourcehtml} onChange={this.handleInputChange} required />
+
+          <span htmlFor='rmq' className='rmq'> <br></br><br></br> Remarques</span>
+          <textarea placeholder='' className='boit4' name="remarques" value={this.state.remarques} onChange={this.handleInputChange}  />
+
+          {/* <h1 className='nvm'> Nouveau Modele</h1> */}
+
+          <input type="submit" className='Vld' disabled={(this.state.nom.trim() == '' || this.state.description.trim() == '' || this.state.sourcehtml.trim() == '') ? true : false} value="Enregistrer" />
+
     
-    // replace the variables with the random values
-    const source = variables !=null && variables.reduce((acc, curr, i) => acc.replace(curr, values[i]), sourcehtml);  
-    
-    console.log(this.state.modeles)
+        </form>
 
-    //traitement de la source html
-    return (
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path='/' exact element={<ModelsList/>} />
-            <Route path="/modele" element={<NewModelComp/>}/>
-          </Routes>
-        </BrowserRouter>
-    )
-  }
+        <div>
+         {this.state.donnees_de_retour!=null ? JSON.stringify(this.state.donnees_de_retour):''}
+
+         <button className='PRIV'  onClick={()=>{if(this.state.nom.trim() == '' || this.state.sourcehtml.trim() == ''){alert('remplissez les cases source html et nom du modele')}  else {this.emailModel()}}} >Privisualiser </button>
+         
+         <Modal isOpen={this.state.openModal}>
+           <button onClick={()=>this.setState({openModal:false})}  >X</button>
+           <h2 style={{ textAlign: 'center'}}>Privisualisation:{this.state.nom}</h2><br></br>
+           <br/>
+           <div dangerouslySetInnerHTML={{__html: this.state.sourcehtml}} />
+         </Modal>
+        </div>
+  </div> 
+  )
+}
 }
 
-export default App;
+  export default models;

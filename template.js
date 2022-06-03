@@ -1,4 +1,4 @@
-function emailModel (content = {}) {
+function emailModel (content = []) {
     return `
         <!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -377,9 +377,8 @@ function emailModel (content = {}) {
                                     <div class="heading-section" style="text-align: center; padding: 0 20px;">
                                         <h2 style="border: 1px solid gray; background-color: #f1f1f1;">${content.number} Nouvelles notices ajoutées</h2>
                                     </div>
-                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        ${
-                                            content.records.map(notice => {
+                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><div>
+                                        ${content.map(notice => {
                                             return `
                                             <tr>
                                                 <td style="padding-bottom: 4px;">
@@ -389,22 +388,18 @@ function emailModel (content = {}) {
                                                         </td>
                                                         <td valign="middle" width="70%">
                                                             <div class="text-blog" style="text-align: left; padding-left:0;">
-                                                                <p class="meta"><span>Ajouté le ${notice?.g_datedoc?.raw.split('T')[0]}</span></p>
+                                                                <p class="meta"><span>Ajouté le ${notice?.title}</span></p>
                                                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="font-size: 13px;">
                                                                     <tr>
-                                                                        <td><strong>Classement:</strong>${notice?.g_planclass?.raw[0].replace('/', ' > ').toLowerCase()}</td>
+                                                                        <td><strong>Classement:</strong>${notice?.title}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><strong>Titre:</strong>${notice?.u_titr?.raw}</td>
                                                                     </tr>
-                                                                    ${
-                                                                        notice?.s_content?.raw ?
-                                                                        `<tr>
-                                                                            <td><strong>Contenu:</strong>${notice?.s_content?.raw.slice(0, 50)}</td>
-                                                                        </tr>`
-                                                                        :
-                                                                        ''
-                                                                    }
+                                                                    <tr>
+                                                                        <td><strong>Contenu:</strong>${notice?.s_content?.raw.slice(0, 50)}</td>
+                                                                    </tr>
+                                                                    
                                                                 </table>
                                                                 <!-- <h2>Tips For Winter Season</h2>
                                                                 <p>A small river named Duden flows by their place and supplies it
@@ -417,7 +412,7 @@ function emailModel (content = {}) {
                                             </tr>
                                             `
                                         })
-                                        }
+                                        }<div>
                                         <tr>
                                             <td valign="middle" class="bg_white">
                                                 <hr style="height:0.25px;border-width:0;color:#c1c1c1;background-color:#c1c1c1">

@@ -39,7 +39,6 @@ const sql_create = `CREATE TABLE IF NOT EXISTS modele  (
   });
 
   app.post("/models/new", async(req, res) => {
-    //   console.log(await req.body) // traitement
 
     const sql = "INSERT INTO modele  (title, description,code_html,comments) VALUES (?, ?, ?, ?)";
     const book = [req.body.nom, req.body.description, req.body.sourcehtml,req.body.remarques];
@@ -53,6 +52,31 @@ const sql_create = `CREATE TABLE IF NOT EXISTS modele  (
     })
     });
 
+  });
+
+  app.get("/models", async(req, res) => {
+
+    const sql = "SELECT * FROM modele ";
+    db.all(sql,(err,data) => {
+      if(err) return;
+      // Success
+     console.log(data);
+     res.send({
+      data
+    });
+     
+    });
+
+  });
+
+  app.delete('/models/:id', function (req, res) {
+    console.log(req.params.id)
+    // if(!req.params.id) return;
+
+    db.run('DELETE from modele where id='+req.params.id,err =>{
+      if (err) return;
+      res.send({message:'suppresion reussi'});
+    });
   });
 
 app.listen(port, () => {
