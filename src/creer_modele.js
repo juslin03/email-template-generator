@@ -10,9 +10,9 @@ class models extends React.Component{
       remarques: '',
       donnees_de_retour: null,
       openModal:false,
-      contentlogo:"https://img.lovepik.com/element/40133/7716.png_1200.png",
+      contentlogo:'https://random.imagecdn.app/500/150',
       contenturl:'https://dipafrica.com/',
-      modeles:[]
+      
     }
   }
 
@@ -26,9 +26,78 @@ class models extends React.Component{
     });
   }
 
+  emailModel (content = {}) {
+    const {nom,description,sourcehtml,remarques} = this.state;
+    var contentnumber=Math.floor(Math.random()*1273);
+    var boucle= '<tr>'+
+    '<td style="padding-bottom: 4px;">'+
+        '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">'+
+        '<tr>'+
+            '<td valign="middle" width="30%">'+
+                '<a href="${url}"><img src="https://img.lovepik.com/element/40133/7716.png_1200.png" alt="${title}" style="width: 80px; height: auto; margin: auto; display: block;"></a>'+
+            '</td>'+
+            '<td valign="middle" width="70%">'+
+                '<div class="text-blog" style="text-align: left; padding-left:0;">'+
+                    '<table role="presentation" border="0" cellpadding="0" cellspacing="0" style="font-size: 13px;">'+
+                        '<tr>'+
+                            '<td><strong>Classement:</strong>${notice.title}</td>'+
+                        '</tr>'+
+                        '<tr>'+
+                            '<td><strong>Titre:</strong>${notice.u_titr}</td>'+
+                        '</tr>'+
+                        '<tr>'+
+                            '<td><strong>Contenu:</strong>${notice.s_content}</td>'+
+                        '</tr>'+
+                   '</table>'+
+                '</div>'+
+            '</tr>'+
+            '</td>'+
+        '</table>'+
+    '</td>'+
+'</tr>';
+
+    boucle=boucle.repeat(contentnumber);
+    const regex = /\$\{([^}]+)\}/g;
+    const variables = sourcehtml.match(regex);
+
+    if(variables!=null){
+  
+    const logoVariable = variables.filter(variable => variable.includes('logo'));
+    const urlVariable = variables.filter(variable => variable.includes('url'));
+    const numberVariable = variables.filter(variable => variable.includes('number'));
+
+    
+    const logo = logoVariable.map(variable => variable.replace(/\$\{([^}]+)\}/g, `${this.state.contentlogo}`));
+    const url = urlVariable.map(variable => variable.replace(/\$\{([^}]+)\}/g, `${this.state.contenturl}`));
+    const number = numberVariable.map(variable => variable.replace(/\$\{([^}]+)\}/g, String(contentnumber)));
+    
+     // generate random values for the variables
+     const values = variables !=null && variables.map(() => Math.random().toString(36).substring(7));
+    
+     // replace the variables with the random values
+     const source = urlVariable !=null && urlVariable.reduce((acc, curr, i) => acc.replace(curr, url[i]), sourcehtml);  
+     const source1 = logoVariable !=null && logoVariable.reduce((acc, curr, i) => acc.replace(curr, logo[i]), source);
+     const source2 = numberVariable !=null && numberVariable.reduce((acc, curr, i) => acc.replace(curr, number[i]), source1); 
+
+     const variables2 = boucle.match(/\$\{([^}]+)\}/g);
+     const values1 = variables2 !=null && variables2.map(() => Math.random().toString(36).substring(7));
+     var source4 = variables2!=null && variables2.reduce((acc, curr, i) => acc.replace(curr, values1[i]), boucle);
+     source4 =[source4];
+      
+
+     const variables3 = source2.match(/\$\{([^}]+)\}/g);
+     const source5 = variables3!=null && variables3.reduce((acc, curr, i) => acc.replace(curr, source4[i]), source2); 
+ 
+   
+    this.setState({sourcehtml:source5})}
+
+    this.setState({openModal:true})
+  }
+
+
   handleSubmit = async (event) => {
     event.preventDefault();
-    await fetch('http://192.168.1.19:8000/models/new', {
+    await fetch('http://192.168.1.24:8000/models/new', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -43,7 +112,7 @@ class models extends React.Component{
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+      console.log(data)
       this.setState({
         nom:'',
         description:'',
@@ -54,69 +123,6 @@ class models extends React.Component{
 
   }
 
-  emailModel (content = {}) {
-    const {sourcehtml,contentlogo,contenturl,contentnotice} = this.state;
-    this.setState({openModal:true})
-
-    var modele=JSON.stringify(sourcehtml)
-    var contentnumber=Math.floor(Math.random()*1273)
-    const random = (length = 8) => {
-      // Declare all characters
-      let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let str = '';
-      for (let i = 0; i < length; i++) {
-          str += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return str;
-    }
-
-    function getRandomDate() {
-      const maxDate = Date.now();
-      const timestamp = Math.floor(Math.random() * maxDate);
-      return new Date(timestamp);
-  }
-
-    if (modele.includes('${content.cid.logo}' )){
-      modele=modele.replace('cid:${content.cid.logo}','https://random.imagecdn.app/500/150')      
-    }
-    if (modele.includes('${content.number}')){
-      modele=modele.replace('${content.number}',contentnumber)      
-    }
-    if (modele.includes('${content.url}')){
-      modele=modele.replace('${content.url}',contenturl)  
-    }
-    if (modele.includes('${content.cid.thumbnail}')){
-      modele=modele.replace('cid:${content.cid.thumbnail}',contentlogo)} 
-
-    if (modele.includes('${content.notice.url}')){
-      modele=modele.replace('${content.notice.url}',contenturl)  
-    }
-
-    if (modele.includes('${notice?.s_content?.raw.slice(0, 50)}')){
-      modele=modele.replace('${notice?.s_content?.raw.slice(0, 50)}',random())  
-    }
-
-    if (modele.includes('${notice?.g_planclass?.raw}')){
-      modele=modele.replace('${notice?.g_planclass?.raw}',Math.floor(Math.random()*1273))  
-    }
-
-    if (modele.includes('${notice?.g_datedoc?.raw}')){
-      modele=modele.replace('${notice?.g_datedoc?.raw}',String(getRandomDate()))  
-    }
-
-    if (modele.includes('${notice?.u_titr?.raw}')){
-      modele=modele.replace('${notice?.u_titr?.raw}',random())  
-    }
-
-    if (modele.includes('${content.site.unsubscribe}')){
-      modele=modele.replace('${content.site.unsubscribe}',"https://www.google.ci/")  
-    }
-   
-    this.setState({sourcehtml:JSON.parse(modele)})
-    console.log(JSON.parse(modele))
-  }
-
-  
   render(){
 
     return(

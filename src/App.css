@@ -24,7 +24,7 @@
 
 
 .boit1{
-  position: fixed;
+  position: sticky;
   bottom: 493px;
   left: 400px;
   width: 645px;
@@ -42,7 +42,7 @@
 }
 
 .GIS{
-  position: relative;
+  position: sticky;
   background: #FAFAFA;
 	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
 	border-radius: 10px;
@@ -50,17 +50,16 @@
   height: 450px;
   width: 855px;
   left: 192px;
-  bottom: -80px;
+  bottom: -82px;
 }
 
 .model{
-  position: fixed;
+  position: sticky;
   left: 152px;
   bottom: 91px;
   width:228px;
   text-align: center;
   color: black;
-  
 }
 
 
@@ -69,7 +68,7 @@
   bottom: 349px;
   left: 400px;
   width: 645px;
-  height: 128px;
+  height: 100px;
   border-style:hidden;
   overflow-y: scroll;
   background: rgba(255,255,255,.1);
@@ -101,7 +100,7 @@
   bottom: 210px;
   left: 400px;
   width: 645px;
-  height: 128px;
+  height: 100px;
   border-style:hidden;
   overflow-y: scroll;
   background: rgba(255,255,255,.1);
@@ -128,10 +127,10 @@
 
 .boit4{
   position: fixed;
-  bottom: 70px;
+  bottom: 80px;
   left: 400px;
   width: 645px;
-  height: 128px;
+  height: 100px;
   border-style:hidden;
   overflow-y: scroll;
   background: rgba(255,255,255,.1);
@@ -282,5 +281,11 @@ input:active{transform: translatey(5px);}
 }
 
 .suppr{
-  width: 50px;
+  width: 80px;
+}
+
+.der{
+  max-height: 1084px;
+  max-width: 1203px;
+  
 }

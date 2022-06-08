@@ -360,7 +360,7 @@ function emailModel (content = []) {
                                         <tr>
                                             <td>
                                                 <div class="text" style="padding: 0 4em; text-align: center;">
-                                                    <img src="cid:${content.cid.logo}" alt="e-dip client logo" style="margin: 10px;">
+                                                    <img src="${logo}" alt="e-dip client logo" style="margin: 10px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -375,44 +375,11 @@ function emailModel (content = []) {
                             <tr>
                                 <td class="bg_white email-section">
                                     <div class="heading-section" style="text-align: center; padding: 0 20px;">
-                                        <h2 style="border: 1px solid gray; background-color: #f1f1f1;">${content.number} Nouvelles notices ajoutées</h2>
+                                        <h2 style="border: 1px solid gray; background-color: #f1f1f1;">${number} Nouvelles notices ajoutées</h2>
                                     </div>
                                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><div>
-                                        ${content.map(notice => {
-                                            return `
-                                            <tr>
-                                                <td style="padding-bottom: 4px;">
-                                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                                        <td valign="middle" width="30%">
-                                                            <a href="${content.notice.url}" target="_blank"><img src="cid:${content.cid.thumbnail}" alt="${content.title}" style="width: 80px; height: auto; margin: auto; display: block;"></a>
-                                                        </td>
-                                                        <td valign="middle" width="70%">
-                                                            <div class="text-blog" style="text-align: left; padding-left:0;">
-                                                                <p class="meta"><span>Ajouté le ${notice?.title}</span></p>
-                                                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="font-size: 13px;">
-                                                                    <tr>
-                                                                        <td><strong>Classement:</strong>${notice?.title}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Titre:</strong>${notice?.u_titr?.raw}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Contenu:</strong>${notice?.s_content?.raw.slice(0, 50)}</td>
-                                                                    </tr>
-                                                                    
-                                                                </table>
-                                                                <!-- <h2>Tips For Winter Season</h2>
-                                                                <p>A small river named Duden flows by their place and supplies it
-                                                                    with the necessary regelialia.</p>
-                                                                <p><a href="#" class="btn btn-primary">Read more</a></p> -->
-                                                            </div>
-                                                        </td>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            `
-                                        })
-                                        }<div>
+                                        ${Data}
+                                        <div>
                                         <tr>
                                             <td valign="middle" class="bg_white">
                                                 <hr style="height:0.25px;border-width:0;color:#c1c1c1;background-color:#c1c1c1">
@@ -426,7 +393,7 @@ function emailModel (content = []) {
                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                         <tr>
                                             <td class="text-blog" style="text-align: center; padding: 2em 2.5em">
-                                                <p><a href="${content.url}" class="btn btn-primary">Voir toutes les nouveautées</a></p>
+                                                <p><a href="${url}" class="btn btn-primary">Voir toutes les nouveautées</a></p>
                                             </td>
                                         </tr>
                                     </table>
@@ -454,7 +421,7 @@ function emailModel (content = []) {
                                                     width="100%">
                                                     <tr>
                                                         <td style="text-align: right; padding-left: 5px; padding-right: 5px;">
-                                                            <p><a href="${content.site.unsubscribe}" style="color: rgba(255,255,255,.4);">Se désabonner</a>
+                                                            <p><a href="https://www.google.ci/" style="color: rgba(255,255,255,.4);">Se désabonner</a>
                                                             </p>
                                                         </td>
                                                     </tr>

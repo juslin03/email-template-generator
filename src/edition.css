@@ -1,0 +1,5 @@
+.edition_space {
+    border: 1px dashed rgba(0.32, 0.32, 0.32, .6);
+    padding: 20px;
+    height: 100%;
+}
